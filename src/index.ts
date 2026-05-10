@@ -1,42 +1,90 @@
 import express from "express";
+import {
+  registerAppResource,
+  registerAppTool,
+  RESOURCE_MIME_TYPE,
+} from "@modelcontextprotocol/ext-apps/server";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { z } from "zod";
 
+const FIXTURE_NAME = "mcp-detect-mcp-typescript";
+const VIEW_URI = `ui://${FIXTURE_NAME}/greet.html`;
+
+// Self-contained MCP Apps view: connects to the host and renders the latest
+// tool result. Loads the ext-apps app-bridge from esm.sh so the HTML works
+// without a separate bundle step.
+const VIEW_HTML = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Greet</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font:16px/1.4 system-ui, sans-serif; padding: 24px; margin: 0; }
+    h1 { margin: 0 0 8px; }
+    .meta { color: #666; font-size: 13px; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <h1 id="greeting">Greeting view loaded.</h1>
+  <p id="hint" class="meta">Call the <code>greet_widget</code> tool to populate this view.</p>
+  <script type="module">
+    import { App } from "https://esm.sh/@modelcontextprotocol/ext-apps@1";
+    const app = new App({ name: "${FIXTURE_NAME}-greet", version: "0.1.0" });
+    app.ontoolresult = (result) => {
+      const text = (result?.content ?? []).find((c) => c.type === "text")?.text;
+      const struct = result?.structuredContent;
+      const heading = document.getElementById("greeting");
+      const hint = document.getElementById("hint");
+      if (text) heading.textContent = text;
+      if (struct && struct.name) hint.textContent = "props.name = " + struct.name;
+    };
+    app.connect();
+  </script>
+</body>
+</html>`;
+
 function getServer() {
   const server = new McpServer(
-    { name: "mcp-detect-mcp-typescript", version: "0.1.0" },
+    { name: FIXTURE_NAME, version: "0.1.0" },
     { capabilities: { tools: {}, resources: {} } },
   );
 
-  server.registerTool(
+  registerAppResource(
+    server,
+    "Greet view",
+    VIEW_URI,
+    { mimeType: RESOURCE_MIME_TYPE },
+    async () => ({
+      contents: [{ uri: VIEW_URI, mimeType: RESOURCE_MIME_TYPE, text: VIEW_HTML }],
+    }),
+  );
+
+  registerAppTool(
+    server,
     "echo",
     {
+      title: "Echo",
       description: "Echo the input back as text.",
       inputSchema: { text: z.string().describe("Text to echo") },
+      _meta: {},
     },
     async ({ text }) => ({ content: [{ type: "text", text }] }),
   );
 
-  server.registerTool(
+  registerAppTool(
+    server,
     "greet_widget",
     {
-      description:
-        "Greet someone and return an HTML widget rendered by the MCP client.",
+      title: "Greet (widget)",
+      description: "Greet someone and render an MCP App view.",
       inputSchema: { name: z.string().describe("Name to greet") },
+      _meta: { ui: { resourceUri: VIEW_URI } },
     },
     async ({ name }) => ({
-      content: [
-        { type: "text", text: `Hello, ${name}!` },
-        {
-          type: "resource",
-          resource: {
-            uri: `ui://greet/${encodeURIComponent(name)}`,
-            mimeType: "text/html",
-            text: `<!doctype html><html><body style="font:16px/1.4 system-ui;padding:24px"><h1 style="margin:0 0 8px">Hello, ${name}!</h1><p style="color:#555">Greeting widget served by mcp-detect-mcp-typescript.</p></body></html>`,
-          },
-        },
-      ],
+      content: [{ type: "text", text: `Hello, ${name}!` }],
+      structuredContent: { name },
     }),
   );
 
@@ -70,16 +118,14 @@ app.post("/mcp", async (req, res) => {
 });
 
 app.get("/mcp", (_req, res) => {
-  res
-    .status(405)
-    .json({
-      jsonrpc: "2.0",
-      id: null,
-      error: { code: -32000, message: "Method not allowed." },
-    });
+  res.status(405).json({
+    jsonrpc: "2.0",
+    id: null,
+    error: { code: -32000, message: "Method not allowed." },
+  });
 });
 
 const port = Number(process.env.PORT ?? "3000");
 app.listen(port, "0.0.0.0", () => {
-  console.log(`[mcp-detect-mcp-typescript] listening on :${port}/mcp`);
+  console.log(`[${FIXTURE_NAME}] listening on :${port}/mcp`);
 });
