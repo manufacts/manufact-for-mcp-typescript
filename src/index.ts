@@ -9,6 +9,8 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { z } from "zod";
 
 const FIXTURE_NAME = "mcp-detect-mcp-typescript";
+const FRAMEWORK_INSTRUCTIONS =
+  "Smoke-test fixture for official MCP TypeScript SDK framework detection (MCP Apps).";
 const VIEW_URI = `ui://${FIXTURE_NAME}/greet.html`;
 
 // Self-contained MCP Apps view: connects to the host and renders the latest
@@ -127,5 +129,5 @@ app.get("/mcp", (_req, res) => {
 
 const port = Number(process.env.PORT ?? "3000");
 app.listen(port, "0.0.0.0", () => {
-  console.log(`[${FIXTURE_NAME}] listening on :${port}/mcp`);
+  console.log(`[${FIXTURE_NAME}] ${FRAMEWORK_INSTRUCTIONS} listening on :${port}/mcp`);
 });
