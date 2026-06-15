@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "typescript": "^5.4.0",
-    "@types/node": "^22.0.0",
+    "@types/node": "^22.19.21",
     "@types/express": "^5.0.0"
   }
 }
