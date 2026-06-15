@@ -8,7 +8,7 @@
 
 Built with [`@modelcontextprotocol/sdk`](https://github.com/modelcontextprotocol/typescript-sdk) and [`@modelcontextprotocol/ext-apps`](https://github.com/modelcontextprotocol/ext-apps).
 
-**Live demo:** [`keen-forge-rsxua.run.mcp-use.com/mcp`](https://keen-forge-rsxua.run.mcp-use.com/mcp)
+**Live demo:** [`fast-pulse-re91b mcp-python.run.mcp-use.com/mcp`](https://fast-pulse-re91b mcp-python.run.mcp-use.com/mcp)
 
 </div>
 
