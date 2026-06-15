@@ -1,4 +1,4 @@
-[![Deploy to mcp-use](https://cdn.mcp-use.com/deploy.svg)](https://mcp-use.com/deploy/start?repository-url=https%3A%2F%2Fgithub.com%2Fmanufacts%2Fmcp-detect-mcp-typescript&branch=main&project-name=mcp-detect-mcp-typescript&port=3000&build-command=npm+run+build&start-command=npm+start&runtime=node&base-image=node%3A20)
+[![Deploy to mcp-use](https://cdn.mcp-use.com/deploy.svg)](https://mcp-use.com/deploy/start?repository-url=https%3A%2F%2Fgithub.com%2Fmanufacts%2Fmanufact-for-mcp-typescript&branch=main&project-name=manufact-for-mcp-typescript&port=3000&build-command=npm+run+build&start-command=npm+start&runtime=node&base-image=node%3A20)
 
 <div align="center">
 
@@ -16,7 +16,7 @@ Built with [`@modelcontextprotocol/sdk`](https://github.com/modelcontextprotocol
 
 ## Deploy to Manufact Cloud
 
-Click the badge above, or open the [one-click deploy flow](https://mcp-use.com/deploy/start?repository-url=https%3A%2F%2Fgithub.com%2Fmanufacts%2Fmcp-detect-mcp-typescript&branch=main&project-name=mcp-detect-mcp-typescript&port=3000&build-command=npm+run+build&start-command=npm+start&runtime=node&base-image=node%3A20). Sign in, connect GitHub, and Manufact clones this repo into your account and deploys it.
+Click the badge above, or open the [one-click deploy flow](https://mcp-use.com/deploy/start?repository-url=https%3A%2F%2Fgithub.com%2Fmanufacts%2Fmanufact-for-mcp-typescript&branch=main&project-name=manufact-for-mcp-typescript&port=3000&build-command=npm+run+build&start-command=npm+start&runtime=node&base-image=node%3A20). Sign in, connect GitHub, and Manufact clones this repo into your account and deploys it.
 
 If you deploy manually from the dashboard instead:
 
