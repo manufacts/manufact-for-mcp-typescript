@@ -5,6 +5,17 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    # Bundle all non-major updates into ONE weekly PR. Each merged PR triggers a
+    # Manufact deploy; ungrouped, a Monday batch merged 3-5 PRs within minutes and
+    # every merge raced a fresh deploy on the same server. One grouped PR = one
+    # merge = one deploy.
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
     # Stay on the latest minor/patch of the framework (and other deps);
     # never auto-bump across a major.
     ignore:
