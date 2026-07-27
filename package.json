@@ -8,8 +8,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.27.0",
-    "@modelcontextprotocol/ext-apps": "^1.7.4",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "@modelcontextprotocol/ext-apps": "^1.7.5",
     "express": "^5.0.0",
     "zod": "^3.23.0"
   },
